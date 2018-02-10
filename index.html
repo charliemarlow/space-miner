@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>Phaser - Making your first game, part 2</title>
+	<title>Spaceminer</title>
     <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
     <style type="text/css">
         body {
@@ -22,8 +22,8 @@ function preload() {
 
 	game.load.image('background', "assets/deep-space.jpg")
   game.load.spritesheet('dude', "assets/dude.png", 32, 48);
-
   game.load.image('diamond', 'assets/diamond.png');
+	game.load.image('gem', 'assets/gem.png');
 	game.load.image('ground', 'assets/terrain1.png');
 }
 
@@ -34,6 +34,17 @@ var background;
 var player;
 
 var platforms;
+
+var diamonds;
+
+var rubies;
+
+
+var score = 0;
+
+var scoreText;
+var livesText;
+var lives = 4;
 
 function create() {
 
@@ -122,6 +133,9 @@ var ground9 = platforms.create(698,game.world.height-30,"ground");
 	j2.body.immovable = true;
 	j3.body.immovable = true;
 
+	var textStyle = {fontSize: '32px', fill:'#0095DD'};
+	livesText = game.add.text(116, 64, "Lives: " + lives, textStyle);
+	livesText.anchor.set(1,0);
 
 
 
@@ -141,7 +155,7 @@ var ground9 = platforms.create(698,game.world.height-30,"ground");
 
 
   player.body.collideWorldBounds = true;
-  player.body.gravity.y = 400;
+  player.body.gravity.y = 300;
 
   cursors = game.input.keyboard.createCursorKeys();
 
@@ -155,11 +169,28 @@ var ground9 = platforms.create(698,game.world.height-30,"ground");
   diamond.body.bounce.y = 0.7 + Math.random() * 0.2;
   diamond.body.collideWorldBounds =true;
   game.physics.arcade.enable(diamond);
+
+	rubies = game.add.group();
+	rubies.enableBody = false;
+
+
+	//adding
+	//err
+	scoreText = game.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#FFF' });
+	game.time.events.repeat(Phaser.Timer.SECOND * 2, 1000, createDiamonds, this);
+	game.time.events.repeat(Phaser.Timer.SECOND * 4, 1000, createRubies, this);
 }
 
 function update() {
-  player.body.velocity.x = 0;
+  /*player.body.velocity.x = 0;
   game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this);
+var hitPlatform = game.physics.arcade.collide(player, platforms);
+game.physics.arcade.collide(diamonds, platforms);
+*/
+
+player.body.velocity.x = 0;
+game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this);
+game.physics.arcade.overlap(player, rubies, playerHitRubies, null, this);
 var hitPlatform = game.physics.arcade.collide(player, platforms);
 game.physics.arcade.collide(diamonds, platforms);
     if (cursors.left.isDown)
@@ -189,12 +220,56 @@ function destroySprite(){
 
 }
 
+function createDiamonds(){
+		var diamond = diamonds.create(game.world.randomX, 0, 'diamond');
+    game.physics.enable(diamond, Phaser.Physics.ARCADE);
+
+		diamond.body.gravity.y = 300;
+    diamond.body.bounce.y = 0.7 * Math.random();
+    diamond.body.collideWorldBounds = true;
+}
+
+function createRubies(){
+
+		var ruby = rubies.create(game.world.randomX, 0, 'gem');
+    game.physics.enable(ruby, Phaser.Physics.ARCADE);
+		ruby.body.gravity.y = 300;
+
+}
+
+function collectDiamond (player, diamond) {
+
+  	diamond.kill();
+		score += 10;
+		scoreText.text = "Score: " + score;
+
+}
+
+function playerHitRubies(player,ruby){
+
+		ruby.kill();
+		lives--;
+		alert("You lost a life!");
+		if(lives != 0){
+			livesText.setText("Lives: " + lives);
+		}else{
+			alert("You lost! Game over");
+			location.reload();
+		}
+}
+
+
+
+
+/*
 function collectDiamond (player, diamond) {
 
     // Removes the star from the screen
   	diamond.kill();
 
-}
+}*/
+
+
 </script>
 
 </body>
