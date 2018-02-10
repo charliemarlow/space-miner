@@ -39,7 +39,6 @@ var layer2;
 var player;
 var alien;
 var alien2;
-var diamonds;
 var platforms;
 
 function create() {
@@ -51,14 +50,86 @@ function create() {
   background.fixedToCamera = true;
 	platforms = game.add.group();
 	platforms.enableBody = true;
-	var ground = platforms.create(0, game.world.height, 'ground');
-	ground.scale.setTo(2, 2);
+
+	var g11 = platforms.create(0, game.world.height-400, 'ground');
+	g12 = platforms.create(87,game.world.height-400,"ground");
+	var g13 = platforms.create(174,game.world.height-400,"ground");
+	var g14 = platforms.create(263,game.world.height-400,"ground");
+	//var g15 = platforms.create(350,game.world.height-650,"ground");
+	//var g16 = platforms.create(437,game.world.height-650,"ground");
+	//var g17 = platforms.create(524,game.world.height-650,"ground");
+	//var g18 = platforms.create(611,game.world.height-650,"ground");
+	//var g19 = platforms.create(698,game.world.height-650,"ground");
+
+
+	var ground = platforms.create(0, game.world.height-30, 'ground');
+	ground2 = platforms.create(87,game.world.height-30,"ground");
+	var ground3 = platforms.create(174,game.world.height-30,"ground");
+	var ground4 = platforms.create(263,game.world.height-30,"ground");
+	var ground5 = platforms.create(350,game.world.height-30,"ground");
+	var ground6 = platforms.create(437,game.world.height-30,"ground");
+	var ground7 = platforms.create(524,game.world.height-30,"ground");
+	var ground8 = platforms.create(611,game.world.height-30,"ground");
+var ground9 = platforms.create(698,game.world.height-30,"ground");
+	//var ground10 = platforms.create(350,game.world.height-20,"ground");
+	//var ground11 = platforms.create(350,game.world.height-20,"ground");
+
+	g11.body.immovable = true;
+	g12.body.immovable = true;
+	g13.body.immovable = true;
+	g14.body.immovable = true;
+	//g15.body.immovable = true;
+	//g16.body.immovable = true;
+//	g17.body.immovable = true;
+
+
+
+	ground.scale.setTo(1, 1);
 	ground.body.immovable = true;
-	var ledge = platforms.create(400, 400, 'ground');
+	ground2.body.immovable = true;
+	ground3.body.immovable = true;
+	ground4.body.immovable = true;
+	ground5.body.immovable = true;
+	ground6.body.immovable = true;
+	ground7.body.immovable = true;
+	ground8.body.immovable = true;
+	ground9.body.immovable = true;
+	//ground10.body.immovable = true;
+//	ground11.body.immovable = true;
+
+
+
+
+
+
+	var ledge = platforms.create(0, 400, 'ground');
 	ledge.body.immovable = true;
-	ledge = platforms.create(-150, 250, 'ground');
-	ledge = platforms.create(-150, 200, 'ground');
-	ledge.body.immovable = true;
+	var l1 = platforms.create(87, 400, 'ground');
+	l1.body.immovable = true;
+	l2 = platforms.create(174,400,'ground');
+	l3 = platforms.create(263,400,'ground');
+	l2.body.immovable = true;
+	l3.body.immovable = true;
+
+
+	var l4 = platforms.create(524,321,"ground");
+	l5 = platforms.create(611,321,"ground");
+	l6 = platforms.create(698,321,"ground");
+
+	l4.body.immovable = true;
+	l5.body.immovable = true;
+	l6.body.immovable = true;
+
+	j1 = platforms.create(524,130,"ground");
+	j2 = platforms.create(611,130,"ground");
+	j3 = platforms.create(698, 130, "ground");
+
+	j1.body.immovable = true;
+	j2.body.immovable = true;
+	j3.body.immovable = true;
+
+
+
 
   /*
   map = game.add.tilemap('level1');
@@ -73,21 +144,21 @@ function create() {
   */
 
 
-  player = game.add.sprite(100, 200, 'dude');
+  player = game.add.sprite(0, 500, 'dude');
   game.physics.arcade.enable(player);
   player.inputEnabled = true;
   player.animations.add('left', [0, 1, 2, 3], 10, true);
   player.animations.add('right', [5, 6, 7, 8], 10, true);
 
-  alien2 = game.add.sprite(100, 100, 'alien');
-  game.physics.arcade.enable(alien2);
+  //alien2 = game.add.sprite(game.world.height-31, 100, 'alien');
+  //game.physics.arcade.enable(alien2);
 
   game.camera.follow(player);
 
 
 
   player.body.collideWorldBounds = true;
-  player.body.gravity.y = 500;
+  player.body.gravity.y = 400;
 
   cursors = game.input.keyboard.createCursorKeys();
 
