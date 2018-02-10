@@ -85,6 +85,7 @@ function create() {
   var diamond = diamonds.create(0, 0, 'diamond');
   diamond.body.gravity.y = 300;
   diamond.body.bounce.y = 0.7 + Math.random() * 0.2;
+  diamond.body.collideWorldBounds =true;
   game.physics.arcade.enable(diamond);
 }
 
