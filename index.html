@@ -29,10 +29,10 @@ function preload() {
   game.load.spritesheet('aliens', "assets/metalslug_monster39x40.png");
   game.load.atlasJSONHash('bot', "assets/running_bot.png", "assets/running_bot.json");
   game.load.image('diamond', 'assets/diamond.png');
-	game.load.image('ground', 'assets/platform.png');
+	game.load.image('ground', 'assets/terrain1.png');
 }
 
-var map;
+//var map;
 var layer;
 var background;
 var layer2;
@@ -51,12 +51,13 @@ function create() {
   background.fixedToCamera = true;
 	platforms = game.add.group();
 	platforms.enableBody = true;
-	var ground = platforms.create(0, game.world.height - 64, 'ground');
+	var ground = platforms.create(0, game.world.height, 'ground');
 	ground.scale.setTo(2, 2);
 	ground.body.immovable = true;
 	var ledge = platforms.create(400, 400, 'ground');
 	ledge.body.immovable = true;
 	ledge = platforms.create(-150, 250, 'ground');
+	ledge = platforms.create(-150, 200, 'ground');
 	ledge.body.immovable = true;
 
   /*
