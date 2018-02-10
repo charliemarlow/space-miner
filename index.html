@@ -25,11 +25,10 @@ function preload() {
   game.load.image('terrain', "assets/terrain.png");
 	game.load.image('background', "assets/deep-space.jpg")
   game.load.spritesheet('dude', "assets/dude.png", 32, 48);
-//game.load.spritesheet('aliens', "assets/AlienCarnage-EnemiesSheet.png", 32, 48);
-game.load.spritesheet('aliens', "assets/metalslug_monster39x40.png");
-
-  //Tile Map
-
+  game.load.spritesheet('alien', "assets/AlienCarnage-EnemiesSheet.png", 32, 48);
+  game.load.spritesheet('aliens', "assets/metalslug_monster39x40.png");
+  game.load.atlasJSONHash('bot', "assets/running_bot.png", "assets/running_bot.json");
+  game.load.image('diamond', 'assets/diamond.png');
 }
 
 var map;
@@ -38,12 +37,26 @@ var background;
 var layer2;
 var player;
 var alien;
+var alien2;
+var diamonds;
 
 function create() {
 
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 	background = game.add.tileSprite(0, 0, game.width, game.height, 'background');
   background.fixedToCamera = true;
+
+  /*
+  map = game.add.tilemap('level1');
+
+  map.addTilesetImage('terrain');
+
+  map.setCollisionBetween(1, 12);
+
+  layer = map.createLayer('ground');
+
+  layer.resizeWorld();
+  */
 
 
   player = game.add.sprite(100, 200, 'dude');
@@ -52,10 +65,8 @@ function create() {
   player.animations.add('left', [0, 1, 2, 3], 10, true);
   player.animations.add('right', [5, 6, 7, 8], 10, true);
 
-  alien = game.add.sprite(100, 100, 'alien');
-  game.physics.arcade.enable(alien);
-
-
+  alien2 = game.add.sprite(100, 100, 'alien');
+  game.physics.arcade.enable(alien2);
 
   game.camera.follow(player);
 
@@ -65,6 +76,16 @@ function create() {
   player.body.gravity.y = 500;
 
   cursors = game.input.keyboard.createCursorKeys();
+
+  //Adding diamonds
+  diamonds = game.add.group();
+  diamonds.enableBody = true;
+
+  //  Create a star inside of the 'stars' group
+  var diamond = diamonds.create(0, 0, 'diamond');
+  diamond.body.gravity.y = 300;
+  diamond.body.bounce.y = 0.7 + Math.random() * 0.2;
+  game.physics.arcade.enable(diamond);
 }
 
 function update() {
