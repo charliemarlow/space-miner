@@ -14,31 +14,25 @@
 
 <script type="text/javascript">
 
-/*
-http://mightyfingers.com/tutorials/display/tilemap/
-*/
+
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
-	game.load.tilemap('level1', "assets/level1test.json", null, Phaser.Tilemap.TILED_JSON);
-  game.load.image('terrain', "assets/terrain.png");
+
 	game.load.image('background', "assets/deep-space.jpg")
   game.load.spritesheet('dude', "assets/dude.png", 32, 48);
-  game.load.spritesheet('alien', "assets/AlienCarnage-EnemiesSheet.png", 32, 48);
-  game.load.spritesheet('aliens', "assets/metalslug_monster39x40.png");
-  game.load.atlasJSONHash('bot', "assets/running_bot.png", "assets/running_bot.json");
+
   game.load.image('diamond', 'assets/diamond.png');
 	game.load.image('ground', 'assets/terrain1.png');
 }
 
-//var map;
-var layer;
+
+
 var background;
-var layer2;
+
 var player;
-var alien;
-var alien2;
+
 var platforms;
 
 function create() {
@@ -131,17 +125,6 @@ var ground9 = platforms.create(698,game.world.height-30,"ground");
 
 
 
-  /*
-  map = game.add.tilemap('level1');
-
-  map.addTilesetImage('terrain');
-
-  map.setCollisionBetween(1, 12);
-
-  layer = map.createLayer('ground');
-
-  layer.resizeWorld();
-  */
 
 
   player = game.add.sprite(0, 500, 'dude');
