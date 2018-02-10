@@ -14,23 +14,56 @@
 
 <script type="text/javascript">
 
+/*
+http://mightyfingers.com/tutorials/display/tilemap/
+*/
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
+	game.load.tilemap('level1', "assets/level1test.json", null, Phaser.Tilemap.TILED_JSON);
+  game.load.image('terrain', "assets/terrain.png");
 	game.load.image('background', "assets/deep-space.jpg")
   game.load.spritesheet('dude', "assets/dude.png", 32, 48);
+	game.load.spritesheet('aliens', "assets/AlienCarnage-EnemiesSheet.png", 32, 48);
+
+  //Tile Map
 
 }
+
+var map;
+var layer;
+var background;
+var layer2;
+var player;
+var alien;
 
 function create() {
 
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-	game.add.tileSprite(0, 0, game.width, game.height, 'background');
+	background = game.add.tileSprite(0, 0, game.width, game.height, 'background');
+  background.fixedToCamera = true;
+
+	//map = game.add.tilemap('level1');
+
+	//map.addTilesetImage('testTileMap','terrain');
+
+
   player = game.add.sprite(100, 200, 'dude');
   game.physics.arcade.enable(player);
   player.inputEnabled = true;
   player.animations.add('left', [0, 1, 2, 3], 10, true);
   player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+  alien = game.add.sprite(100, 100, 'alien');
+  game.physics.arcade.enable(alien);
+
+
+
+  //layer = map.createLayer('ground');
+  //layer.resizeWorld();
+  //layer2 = map.createLayer('background');
+  game.camera.follow(player);
 
 
 
