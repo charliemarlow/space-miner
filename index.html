@@ -25,7 +25,8 @@ function preload() {
   game.load.image('terrain', "assets/terrain.png");
 	game.load.image('background', "assets/deep-space.jpg")
   game.load.spritesheet('dude', "assets/dude.png", 32, 48);
-	game.load.spritesheet('aliens', "assets/AlienCarnage-EnemiesSheet.png", 32, 48);
+//game.load.spritesheet('aliens', "assets/AlienCarnage-EnemiesSheet.png", 32, 48);
+game.load.spritesheet('aliens', "assets/metalslug_monster39x40.png");
 
   //Tile Map
 
@@ -44,10 +45,6 @@ function create() {
 	background = game.add.tileSprite(0, 0, game.width, game.height, 'background');
   background.fixedToCamera = true;
 
-	//map = game.add.tilemap('level1');
-
-	//map.addTilesetImage('testTileMap','terrain');
-
 
   player = game.add.sprite(100, 200, 'dude');
   game.physics.arcade.enable(player);
@@ -60,9 +57,6 @@ function create() {
 
 
 
-  //layer = map.createLayer('ground');
-  //layer.resizeWorld();
-  //layer2 = map.createLayer('background');
   game.camera.follow(player);
 
 
@@ -97,6 +91,9 @@ function update() {
 }
 
 function render(){
+
+}
+function destroySprite(){
 
 }
 </script>
