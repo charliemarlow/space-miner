@@ -29,61 +29,35 @@ function create() {
 	platforms = game.add.group();
 	platforms.enableBody = true;
 
-	var g11 = platforms.create(0, game.world.height-400, 'ground');
-	var g12 = platforms.create(87,game.world.height-400,"ground");
-	//var g13 = platforms.create(174,game.world.height-400,"ground");
-	var g14 = platforms.create(263,game.world.height-400,"ground");
+  for(var i =0; i < 88*3; i += 88){
+    ground = platforms.create(i,game.world.height - 400, 'ground');
+    ground.body.immovable = true;
+  }
 
-	var ground = platforms.create(0, game.world.height-30, 'ground');
-	var ground2 = platforms.create(87,game.world.height-30,"ground");
-	var ground3 = platforms.create(174,game.world.height-30,"ground");
-	var ground4 = platforms.create(263,game.world.height-30,"ground");
-	var ground5 = platforms.create(350,game.world.height-30,"ground");
-	var ground6 = platforms.create(437,game.world.height-30,"ground");
-	var ground7 = platforms.create(524,game.world.height-30,"ground");
-	var ground8 = platforms.create(611,game.world.height-30,"ground");
-	var ground9 = platforms.create(698,game.world.height-30,"ground");
+  for(var i =0; i < game.width +88; i += 88){
+    ground = platforms.create(i,game.world.height - 30, 'ground');
+    ground.body.immovable = true;
+    ground.scale.setTo(1,1);
+  }
 
-	g11.body.immovable = true;
-	g12.body.immovable = true;
-	//g13.body.immovable = true;
-	g14.body.immovable = true;
+  for(var i =0; i < 88*4; i += 88){
+    ground = platforms.create(i,400, 'ground');
+    ground.body.immovable = true;
+  }
 
-	ground.scale.setTo(1, 1);
-	ground.body.immovable = true;
-	ground2.body.immovable = true;
-	ground3.body.immovable = true;
-	ground4.body.immovable = true;
-	ground5.body.immovable = true;
-	ground6.body.immovable = true;
-	ground7.body.immovable = true;
-	ground8.body.immovable = true;
-	ground9.body.immovable = true;
+  for(var i =0; i < game.width; i += 88){
+    if(i > 88 *5){
+      ground = platforms.create(i,275, 'ground');
+      ground.body.immovable = true;
+    }
+  }
 
-	var ledge = platforms.create(0, 400, 'ground');
-	ledge.body.immovable = true;
-	var l1 = platforms.create(87, 400, 'ground');
-	l1.body.immovable = true;
-	var l2 = platforms.create(174,400,'ground');
-	var l3 = platforms.create(263,400,'ground');
-	l2.body.immovable = true;
-	l3.body.immovable = true;
-
-	var l4 = platforms.create(524,321,"ground");
-	var l5 = platforms.create(611,321,"ground");
-	var l6 = platforms.create(698,321,"ground");
-
-	l4.body.immovable = true;
-	l5.body.immovable = true;
-	l6.body.immovable = true;
-
-	var j1 = platforms.create(524,130,"ground");
-	var j2 = platforms.create(611,130,"ground");
-	var j3 = platforms.create(698, 130, "ground");
-
-	j1.body.immovable = true;
-	j2.body.immovable = true;
-	j3.body.immovable = true;
+  for(var i =0; i < game.width; i += 88){
+    if(i > 88 *6 || i == 88 *5){
+      ground = platforms.create(i,100, 'ground');
+      ground.body.immovable = true;
+    }
+  }
 
 	var textStyle = {fontSize: '32px', fill:'#0095DD'};
 	livesText = game.add.text(135, 64, "Lives: " + lives, textStyle);
