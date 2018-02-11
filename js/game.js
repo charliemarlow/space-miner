@@ -16,7 +16,6 @@ var lives = 4; //number of lives
 var layer;
 var exits;
 var exit;
-var exitCount =0;
 
 function preload() {
   game.load.image('background', 'assets/deep-space.jpg');
@@ -201,7 +200,7 @@ function exitGame(player, ex){
   game.physics.enable(exit,Phaser.Physics.ARCADE);
   score += 50;
   scoreText.text = "Score: " + score;
-  
+
 }
 function exitGameAccident(){
   exit.destroy();
