@@ -13,38 +13,61 @@ var score = 0;
 var scoreText;
 var livesText;
 var lives = 4; //number of lives
+var layer;
+var exits;
+var exit;
+var exitCount =0;
 
 function preload() {
   game.load.image('background', 'assets/deep-space.jpg');
   game.load.spritesheet('dude', "assets/dude.png", 32, 48);// user character
   game.load.image('diamond', 'assets/diamond.png');
   game.load.image('gem', 'assets/gem.png');// rubies image
+  game.load.image('star','assets/star.png');
   game.load.image('ground', 'assets/terrain1.png');
+  //game.load.tilemap('map', 'assets/simplevel', null, Phaser.Tilemap.TILED_JSON);
+  game.load.tilemap('map', 'assets/level1test.CSV', null, Phaser.Tilemap.CSV);
+  game.load.image('tiles', 'assets/terrain.png');
 }//preload
 
 function create() {
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 	background = game.add.tileSprite(0, 0, game.width, game.height, 'background');
   background.fixedToCamera = true;
+  map = game.add.tilemap('map', 32, 32);
+
+      //  Now add in the tileset
+      map.addTilesetImage('tiles');
+
+      //  Create our layer
+      layer = map.createLayer(0);
+
+      //  Resize the world
+      layer.resizeWorld();
+      map.setCollisionBetween(0, 300, true,layer);
+
 	platforms = game.add.group();
 	platforms.enableBody = true;
-
+/*
+  //3 blocks on right
   for(var i =0; i < 88*3; i += 88){
     ground = platforms.create(i,game.world.height - 400, 'ground');
     ground.body.immovable = true;
   }
 
+  // blocks across bottom
   for(var i =0; i < game.width +88; i += 88){
     ground = platforms.create(i,game.world.height - 30, 'ground');
     ground.body.immovable = true;
     ground.scale.setTo(1,1);
   }
-
+  // 4 blocks on right
   for(var i =0; i < 88*4; i += 88){
     ground = platforms.create(i,400, 'ground');
     ground.body.immovable = true;
   }
 
+  //creates three blocks on right
   for(var i =0; i < game.width; i += 88){
     if(i > 88 *5){
       ground = platforms.create(i,275, 'ground');
@@ -52,18 +75,21 @@ function create() {
     }
   }
 
+  //creates 2 blocks on right, one to the side of the ledge
   for(var i =0; i < game.width; i += 88){
     if(i > 88 *6 || i == 88 *5){
       ground = platforms.create(i,100, 'ground');
       ground.body.immovable = true;
     }
   }
+  */
 
 	var textStyle = {fontSize: '32px', fill:'#0095DD'};
-	livesText = game.add.text(135, 64, "Lives: " + lives, textStyle);
+	livesText = game.add.text(width - 16, 16, "Lives: " + lives, textStyle);
 	livesText.anchor.set(1,0);
+  livesText.fixedToCamera =true;
 
-  player = game.add.sprite(0, 500, 'dude');
+  player = game.add.sprite(100, 500, 'dude');
   game.physics.arcade.enable(player);
   player.inputEnabled = true;
   player.animations.add('left', [0, 1, 2, 3], 10, true);
@@ -84,24 +110,35 @@ function create() {
   var diamond = diamonds.create(0, 0, 'diamond');
   diamond.body.gravity.y = 300;
   diamond.body.bounce.y = 0.7 + Math.random() * 0.2;
-  diamond.body.collideWorldBounds =true;
+  diamond.body.collideWorldBounds =false;
   game.physics.arcade.enable(diamond);
 
 	rubies = game.add.group();
 	rubies.enableBody = false;
 
 	scoreText = game.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#FFF' });
+  scoreText.fixedToCamera=true;
+  exits = game.add.group();
+  exit = exits.create(64,64,'gem');
+  game.physics.arcade.enable(exit);
+  exits.enableBody =true;
 	game.time.events.repeat(Phaser.Timer.SECOND * 2, 1000, createDiamonds, this);
 	game.time.events.repeat(Phaser.Timer.SECOND * 4, 1000, createRubies, this);
+  game.time.events.repeat(Phaser.Timer.SECOND * 20, 1000, exitGameAccident, this);
+
 
 }//create
 
 function update() {
 	player.body.velocity.x = 0;
+  game.physics.arcade.collide(player, layer);
 	game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this);
 	game.physics.arcade.overlap(player, rubies, playerHitRubies, null, this);
+  game.physics.arcade.overlap(player, exits, exitGame, null, this);
+  game.physics.arcade.collide(exit, layer);
 	var hitPlatform = game.physics.arcade.collide(player, platforms);
-	game.physics.arcade.collide(diamonds, platforms);
+	//game.physics.arcade.collide(diamonds, layer);
+
 
   if (cursors.left.isDown){
       player.body.velocity.x = -250;
@@ -131,11 +168,11 @@ function createDiamonds(){
 
 		diamond.body.gravity.y = 300;
     diamond.body.bounce.y = 0.7 * Math.random();
-    diamond.body.collideWorldBounds = true;
+    //diamond.body.collideWorldBounds = true;
 }//createDiamonds
 
 function createRubies(){
-		var ruby = rubies.create(game.world.randomX, 0, 'gem');
+		var ruby = rubies.create(game.world.randomX, 0, 'star');
     game.physics.enable(ruby, Phaser.Physics.ARCADE);
 		ruby.body.gravity.y = 300;
 }//createRubies
@@ -157,3 +194,17 @@ function playerHitRubies(player,ruby){
 			location.reload();
 		}//if-else
 }//playerHitRubies
+
+function exitGame(player, ex){
+  ex.destroy();
+  exit = exits.create(game.world.randomX, game.world.randomY,'gem');
+  game.physics.enable(exit,Phaser.Physics.ARCADE);
+  score += 50;
+  scoreText.text = "Score: " + score;
+  
+}
+function exitGameAccident(){
+  exit.destroy();
+  exit = exits.create(game.world.randomX, game.world.randomY,'gem');
+  game.physics.enable(exit,Phaser.Physics.ARCADE);
+}
